@@ -3,8 +3,8 @@ import axiosInstance from "@live-config/axiosInstance";
 const APIContent = {
   async getContent() {
     try {
-      const res = await axiosInstance.get("/content");
-      return res;
+      const { data } = await axiosInstance.get("/content");
+      return data;
     } catch (error) {
       console.log(error);
     }
