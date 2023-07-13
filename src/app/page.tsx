@@ -1,14 +1,5 @@
-import Image from "next/image";
-import { Inter } from "next/font/google";
-import styles from "./page.module.css";
-import Navbar from "@live-component/navbar/index";
-
-const inter = Inter({ subsets: ["latin"] });
+import LoginPage from "./auth/login/page";
 
 export default function Home() {
-  return (
-    <main>
-      <Navbar />
-    </main>
-  );
+  return <LoginPage />;
 }
