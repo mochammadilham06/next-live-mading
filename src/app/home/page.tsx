@@ -17,13 +17,16 @@ const HomePage = async () => {
 export default HomePage;
 async function getData() {
   try {
-    const res = await fetch(`${CONST.BASE_URL}/content`, {
-      cache: "no-store",
-      headers: {
-        "Content-Type": "application/json",
-        "x-hasura-admin-secret": `${CONST.BASE_KEY}`,
-      },
-    });
+    const res = await fetch(
+      `https://works-project.hasura.app/api/rest/content`,
+      {
+        cache: "no-store",
+        headers: {
+          "Content-Type": "application/json",
+          "x-hasura-admin-secret": `0SwWGQ0TgVvMh2qJRz940Z5QePsofSfk1TJjLT1sX0I5pk71WO8O5Sdn0ANlgSvk`,
+        },
+      }
+    );
     return res.json();
   } catch (error) {
     console.log(error);
