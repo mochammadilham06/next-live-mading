@@ -26,6 +26,7 @@
       "@live-util/*": ["./src/utils/*"],
       "@live-interface/*": ["./src/interfaces/*"],
       "@live-api/*": ["./src/apis/*"],
+      "@live-asset/*": ["./src/assets/*"],
       "@live-store/*": ["./src/stores/*"]
     }
   },
