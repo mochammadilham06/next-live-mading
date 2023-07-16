@@ -46,6 +46,7 @@ const ModalUserManagement = ({ formData, onUpdateSuccess }: GetUserProps) => {
       fullname: form.fullname,
       address: form.address,
       gender: form.gender,
+      images: form.images,
     };
     try {
       const res = await APIAdmin.UpdateUser(form?.id, body);
