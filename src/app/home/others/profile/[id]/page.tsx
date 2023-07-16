@@ -18,7 +18,7 @@ import { UserIdResponse } from "src/interface/user";
 import Spinner from "@live-component/Spinner";
 import Avatar2 from "@live-component/Avatar/avatar2";
 
-const Profile = () => {
+const OtherProfile = () => {
   const [data, setData] = useState<UserIdResponse | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
   const params = useSearchParams();
@@ -130,4 +130,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default OtherProfile;

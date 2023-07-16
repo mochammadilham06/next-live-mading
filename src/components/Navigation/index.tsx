@@ -3,10 +3,33 @@ import Card from "@live-component/Card";
 import { HomeIcon, LogoutIcon, UserIcon } from "@live-config/images";
 import STYLES from "@live-util/active_constant";
 import React, { Fragment } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-const Navigation = () => {
+import { deleteCookie } from "cookies-next";
+import Swal from "sweetalert2";
+const Navigation = ({ props }: any) => {
   const pathname = usePathname();
+  const router = useRouter();
+  const handleLogout = () => {
+    return Swal.fire({
+      title: "Want to Logout?",
+      text: "You will redirect to Login Page",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Logout!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteCookie("user_id");
+        Swal.fire("Logout Complete", "Redirect to Login page", "success").then(
+          () => {
+            router.push("/auth/login");
+          }
+        );
+      }
+    });
+  };
   return (
     <Fragment>
       <Card isPadding={false}>
@@ -22,7 +45,10 @@ const Navigation = () => {
             <span className="hidden md:block">Home</span>
           </Link>
           <Link
-            href="home/profile/Aghes Jhonson"
+            href={{
+              pathname: `/home/profile/${props?.fullname}`,
+              query: { id: props?.id },
+            }}
             className={`${
               pathname.startsWith("/home/profile/")
                 ? STYLES.ACTIVE
@@ -34,10 +60,13 @@ const Navigation = () => {
             <span className="hidden md:block">Info</span>
           </Link>
 
-          <Link href="/auth/login" className={`${STYLES.NOT_ACTIVE}`}>
+          <div
+            className={`${STYLES.NOT_ACTIVE} cursor-pointer`}
+            onClick={handleLogout}
+          >
             <LogoutIcon />
             <span className="hidden md:block">Logout</span>
-          </Link>
+          </div>
         </div>
       </Card>
     </Fragment>
