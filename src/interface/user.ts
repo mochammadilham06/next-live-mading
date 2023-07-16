@@ -27,3 +27,12 @@ export interface UserIdResponse {
   address: string;
   users_posts: Post[];
 }
+
+export interface Auth {
+  username: string;
+  password: string;
+}
+export interface ResponseUsersAuth {
+  id: string;
+  roles: string;
+}

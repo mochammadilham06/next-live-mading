@@ -13,10 +13,10 @@ const APIComment = {
       console.log(error);
     }
   },
-  async postComment(data: any) {
+  async postComment(request: any) {
     try {
-      const res = await axiosInstance.post("/comments", data);
-      return res;
+      const { data } = await axiosInstance.post("/comments", request);
+      return data;
     } catch (error) {
       console.log(error);
     }

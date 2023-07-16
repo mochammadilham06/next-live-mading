@@ -1,17 +1,17 @@
 import axiosInstance from "@live-config/axiosInstance";
 
 const APIAuth = {
-  async Login(data: any) {
+  async Login(request: any) {
     try {
-      const res = await axiosInstance.get("/auth/login", data);
-      return res;
+      const { data } = await axiosInstance.post("/auth/login", request);
+      return data;
     } catch (error) {
       console.log(error);
     }
   },
   async Register(data: any) {
     try {
-      const res = await axiosInstance.post("/auth/register", data);
+      const res = await axiosInstance.post("/auth/register", { objects: data });
       return res;
     } catch (error) {
       console.log(error);
