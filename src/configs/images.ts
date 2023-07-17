@@ -1,6 +1,7 @@
 //Images
 export { default as ProfileImage } from "@live-asset/images/profile.jpg";
 export { default as Buildings } from "@live-asset/images/buildings.jpg";
+export { default as DummyProfile } from "@live-asset/images/dummy.png";
 
 //Svg
 export { default as MoreIcon } from "@live-asset/svg/more";
@@ -17,3 +18,5 @@ export { default as ToggleIcon } from "@live-asset/svg/toggle";
 export { default as EyeIcon } from "@live-asset/svg/eye";
 export { default as EditIcon } from "@live-asset/svg/edit";
 export { default as TrashIcon } from "@live-asset/svg/trash";
+export { default as SendIcon } from "@live-asset/svg/send";
+export { default as ArrowDownIcon } from "@live-asset/svg/arrow";

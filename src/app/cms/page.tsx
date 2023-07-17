@@ -9,17 +9,44 @@ import {
   UserIcon,
 } from "@live-config/images";
 import ContentIcon from "@live-asset/svg/threads";
+import Swal from "sweetalert2";
+import { deleteCookie } from "cookies-next";
 
 const AdminLayout = ({ children }: any) => {
   const router = useRouter();
   const pathname = usePathname();
   const [activeTab, setActiveTab] = useState("");
   const [isAsideOpen, setIsAsideOpen] = useState(true);
+
   const handleTabClick = (tab: any) => {
     setActiveTab(tab);
   };
+
   const handleToggleAside = () => {
     setIsAsideOpen(!isAsideOpen);
+  };
+
+  const handleLogout = () => {
+    Swal.fire({
+      title: "Want to Logout?",
+      text: "You will be redirected to the Login Page",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Logout",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteCookie("user_id");
+        Swal.fire(
+          "Logout Complete",
+          "Redirecting to the Login page",
+          "success"
+        ).then(() => {
+          router.push("/auth/login");
+        });
+      }
+    });
   };
 
   const sidebarItems = [
@@ -33,7 +60,7 @@ const AdminLayout = ({ children }: any) => {
     {
       name: "Logout",
       icon: <LogoutIcon />,
-      route: "/auth/login",
+      onClick: handleLogout,
     },
   ];
 
@@ -52,9 +79,9 @@ const AdminLayout = ({ children }: any) => {
         </div>
         <nav className="mt-4">
           <ul>
-            {sidebarItems.map((item) => (
+            {sidebarItems.map((item, index) => (
               <li
-                key={item.route}
+                key={index}
                 className={`cursor-pointer flex justify-center lg:justify-normal ${
                   pathname === item.route
                     ? " text-md flex  gap-3 py-3 my-1 bg-socialBlue text-white mx-5 lg:mx-2 px-2 rounded-md shadow-md shadow-gray-300 items-center"
@@ -62,19 +89,27 @@ const AdminLayout = ({ children }: any) => {
                 }`}
                 onClick={() => {
                   handleTabClick(item.route);
-                  router.push(item.route);
                 }}
               >
                 {item.icon}
-                <Link
-                  href={item.route}
-                  passHref
-                  className={`hidden text-center lg:block ${
-                    pathname === item.route ? "font-bold" : ""
-                  }`}
-                >
-                  {item.name}
-                </Link>
+                {item.route ? (
+                  <Link
+                    href={item.route}
+                    passHref
+                    className={`hidden text-center lg:block ${
+                      pathname === item.route ? "font-bold" : ""
+                    }`}
+                  >
+                    {item.name}
+                  </Link>
+                ) : (
+                  <div
+                    className="hidden text-center lg:block"
+                    onClick={item.onClick}
+                  >
+                    {item.name}
+                  </div>
+                )}
               </li>
             ))}
           </ul>

@@ -9,7 +9,7 @@ type AvatarProps = {
   isSize?: "sm" | "md" | "lg" | "xl" | "2xl";
 };
 
-const Avatar: FC<AvatarProps> = ({
+const Avatar2: FC<AvatarProps> = ({
   imageUrl,
   alt,
   className,
@@ -33,8 +33,8 @@ const Avatar: FC<AvatarProps> = ({
           className={`rounded-full overflow-hidden object-cover ${sizeClass}`}
           src={imageUrl}
           alt={`${alt}`}
-          quality={100}
-          fill
+          width={400}
+          height={400}
         />
       )}
       <span className="absolute ltr:right-0 rtl:left-0 bottom-0 w-4 h-4 rounded-full"></span>
@@ -42,4 +42,4 @@ const Avatar: FC<AvatarProps> = ({
   );
 };
 
-export default Avatar;
+export default Avatar2;

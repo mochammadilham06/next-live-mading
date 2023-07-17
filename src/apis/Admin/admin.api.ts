@@ -1,18 +1,37 @@
 import axiosInstance from "@live-config/axiosInstance";
 
 const APIAdmin = {
-  async UpdateValidation(data: any) {
-    const { id } = data;
+  async GetAllContent() {
     try {
-      const res = await axiosInstance.put(`/post/${id}`, data);
-      return res;
-    } catch (error) {}
+      const { data } = await axiosInstance.get("/post");
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
   },
-  async UpdateUser(data: any) {
-    const { id } = data;
+  async GetAllUsers() {
     try {
-      const res = await axiosInstance.put(`/cms/user/${id}`);
+      const { data } = await axiosInstance.get("/cms/user");
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  async UpdateValidation(id: any, request: any) {
+    console.log(request);
+    try {
+      const res = await axiosInstance.put(`/post/${id}`, {
+        validation: request,
+      });
       return res;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  async UpdateUser(id: any, request: any) {
+    try {
+      const { data } = await axiosInstance.put(`/cms/user/${id}`, request);
+      return data;
     } catch (error) {
       console.log(error);
     }
@@ -26,3 +45,5 @@ const APIAdmin = {
     }
   },
 };
+
+export default APIAdmin;

@@ -17,18 +17,20 @@ const APIContent = {
       console.log(error);
     }
   },
-  async postContent(data: any) {
+  async postContent(requst: any) {
     try {
-      const res = await axiosInstance.post("/content", data);
-      return res;
+      const { data } = await axiosInstance.post("/content", {
+        objects: requst,
+      });
+      return data;
     } catch (error) {
       console.log(error);
     }
   },
-  async updateContent(id: string, data: any) {
+  async updateContent(id: string, request: any) {
     try {
-      const res = await axiosInstance.put(`/content/${id}`, data);
-      return res;
+      const { data } = await axiosInstance.put(`/content/${id}`, request);
+      return data;
     } catch (error) {
       console.log(error);
     }

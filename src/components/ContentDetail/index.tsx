@@ -1,67 +1,95 @@
-"use client";
 import React, { Fragment } from "react";
 import Avatar from "@live-component/Avatar";
 import Card from "@live-component/Card";
-import { ProfileImage } from "@live-config/images";
+import { DummyProfile, ProfileImage } from "@live-config/images";
 import Link from "next/link";
 import "./contentCard.css";
 import ToggleButton from "@live-component/Toggle";
-import { ContentInterface } from "src/interface/content";
 import CommentCard from "@live-component/Comments";
 import { Post } from "src/interface/user";
-
-const ContentCardDetail = ({ data, username }: any) => {
-  console.log(data);
+import Image from "next/image";
+import Avatar2 from "@live-component/Avatar/avatar2";
+import { getCookie } from "cookies-next";
+import { useSearchParams } from "next/navigation";
+const ContentCardDetail = ({ data }: any) => {
+  const params = useSearchParams();
+  const USER_ID = params.get("id");
+  const PARAMS_ID = getCookie("user_id");
+  console.log(data?.users_posts?.map((val: any) => val.content));
   return (
     <Fragment>
-      {data?.map((items: Post) => (
-        <Card key={items.id}>
-          <div className="flex gap-3">
-            <Link href={""} className="hover:cursor-pointer">
-              <Avatar imageUrl={ProfileImage} alt={"User"} />
-            </Link>
-            <div className="flex justify-between grow">
-              <div>
-                <p>
-                  <Link href={"#"} className="font-bold hover:underline">
-                    {username}
-                  </Link>{" "}
-                  Shared a{" "}
-                  <Link
-                    href={"#"}
-                    className="text-socialBlue font-semibold hover:underline"
-                  >
-                    Content
-                  </Link>
-                </p>
-                <p className="text-gray-500 text-sm">{items?.created_at}</p>
+      {data?.users_posts?.length !== 0 ? (
+        data?.users_posts?.map((items: Post) => (
+          <Card key={items?.id}>
+            <div className="flex gap-3">
+              <Link href={"#"} className="hover:cursor-pointer">
+                <Avatar2
+                  imageUrl={data?.images ? data?.images : DummyProfile}
+                  alt={"User"}
+                />
+              </Link>
+              <div className="flex justify-between grow">
+                <div>
+                  <p>
+                    <Link href={"#"} className="font-bold hover:underline">
+                      {data?.fullname}{" "}
+                    </Link>{" "}
+                    Shared a{" "}
+                    <Link
+                      href={"#"}
+                      className="text-socialBlue font-semibold hover:underline"
+                    >
+                      Content
+                    </Link>
+                  </p>
+                  <p className="text-gray-500 text-sm">2 hours ago</p>
+                </div>
+                {USER_ID === PARAMS_ID ? (
+                  <ToggleButton items={items} mode="detail" />
+                ) : (
+                  ""
+                )}
               </div>
-              <ToggleButton />
             </div>
-          </div>
-          <div className="content-wrapper space-y-3">
-            <p className="text-sm my-3">{items.content}</p>
-            <div className="rounded-md overflow-hidden bg-slate-200">
-              <img className="object-cover" src={items?.image} loading="lazy" />
+            <div className="content-wrapper space-y-3">
+              <p className="text-sm my-3">{items.content}</p>
+              {items?.image ? (
+                <div
+                  className="rounded-md overflow-hidden bg-slate-200"
+                  style={{
+                    position: "relative",
+                    width: "100%",
+                    paddingBottom: "56.25%",
+                  }}
+                >
+                  <Image
+                    alt="haha"
+                    className="object-cover object-center absolute h-full w-full"
+                    src={items?.image}
+                    fill
+                  />
+                </div>
+              ) : (
+                ""
+              )}
             </div>
-          </div>
 
-          <div className="mt-5">
-            <CommentCard comments={items?.post_comments} />
-          </div>
-          <div className="flex mt-4 gap-3 items-center">
-            <div>
-              <Avatar imageUrl={ProfileImage} alt={"User"} />
-            </div>
-            <div className="border grow rounded-full">
-              <textarea
-                className="px-4 p-3 h-12 rounded-full block w-full overflow-hidden"
-                placeholder="Leave a Comment"
+            <div className="mt-5">
+              <CommentCard
+                comments={items?.post_comments}
+                userData={data?.id}
+                postid={items?.id}
               />
             </div>
-          </div>
+          </Card>
+        ))
+      ) : (
+        <Card>
+          <h1 className="text-center font-bold text-2xl">
+            You Dont have a content :(
+          </h1>
         </Card>
-      ))}
+      )}
     </Fragment>
   );
 };
