@@ -1,5 +1,5 @@
 "use client";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import CommentsIcon from "@live-asset/svg/comment";
 import Card from "@live-component/Card";
 import { DummyProfile, SendIcon } from "@live-config/images";
@@ -7,6 +7,7 @@ import Avatar2 from "@live-component/Avatar/avatar2";
 import APIComment from "@live-api/Client/comment.api";
 import { SuccessAlert } from "@live-component/Alert/AlertSuccess";
 import { ErrorAlert } from "@live-component/Alert/AlertError";
+import { SkeletonCard } from "@live-component/Skeleton";
 
 const CommentCard = ({ comments, userData, postid }: any) => {
   const initialData = {
@@ -15,6 +16,9 @@ const CommentCard = ({ comments, userData, postid }: any) => {
     user_id: userData?.id,
   };
   const [showComments, setShowComments] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const [newComment, setNewComment] = useState<any[]>();
   const [form, setForm] = useState(initialData);
   const toggleComments = () => {
     setShowComments(!showComments);
@@ -27,24 +31,42 @@ const CommentCard = ({ comments, userData, postid }: any) => {
       [name]: value,
     }));
   };
+  const getData = async () => {
+    setLoading(true);
+    try {
+      const { data } = await APIComment.getComment(postid);
+      console.log(data);
+      setNewComment(data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSend = async () => {
     try {
-      const res = await APIComment.postComment(form).then(() => {
-        SuccessAlert("Success", "Add Comment Success");
-      });
-      console.log(res);
+      await APIComment.postComment(form);
+      SuccessAlert("Success", "Add Comment Success");
+      getData();
     } catch (error) {
       ErrorAlert("Failed", "Failed to Post Comment");
     }
     setForm(initialData);
   };
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSend();
     }
   };
+  useEffect(() => {
+    if (showComments) {
+      getData();
+    }
+  }, [showComments]);
+
   return (
     <div>
       {comments?.length === 0 ? (
@@ -64,8 +86,10 @@ const CommentCard = ({ comments, userData, postid }: any) => {
           {showComments ? "Hide Comments" : `${comments?.length} Comments`}
         </button>
       )}
+      {showComments && loading && <SkeletonCard isImage={false} />}
       {showComments &&
-        comments?.map((comment: any, index: number) => (
+        !loading &&
+        newComment?.map((comment: any, index: number) => (
           <Card key={index}>
             <div className="flex mt-4 gap-3 items-center">
               <div>

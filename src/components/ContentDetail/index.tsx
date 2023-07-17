@@ -77,7 +77,7 @@ const ContentCardDetail = ({ data }: any) => {
             <div className="mt-5">
               <CommentCard
                 comments={items?.post_comments}
-                userData={data?.id}
+                userData={data}
                 postid={items?.id}
               />
             </div>

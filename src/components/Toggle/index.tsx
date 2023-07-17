@@ -11,7 +11,7 @@ import Swal from "sweetalert2";
 interface ModeToggle {
   mode?: "detail" | "normal";
   items?: any;
-  onSuccess?: () => void;
+  onSuccess?: any;
 }
 const ToggleButton = ({ items, mode, onSuccess }: ModeToggle) => {
   console.log(items);
@@ -44,6 +44,7 @@ const ToggleButton = ({ items, mode, onSuccess }: ModeToggle) => {
         try {
           const res = await APIContent.deleteContent(id);
           Swal.fire("Deleted!", "Your file has been deleted.", "success");
+          onSuccess();
           return res;
         } catch (error) {
           ErrorAlert("Error", "Failed to Delete data");
@@ -67,6 +68,7 @@ const ToggleButton = ({ items, mode, onSuccess }: ModeToggle) => {
       SuccessAlert("Complete", "Update Complete");
       setFormData(initialData);
       setShowModal(false);
+      onSuccess();
     } catch (error) {
       ErrorAlert("Failed", "Update Failed");
       console.log(error);

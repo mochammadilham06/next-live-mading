@@ -1,14 +1,10 @@
 import axiosInstance from "@live-config/axiosInstance";
 
 const APIComment = {
-  async getComment() {
+  async getComment(id: any) {
     try {
-      const res = await axiosInstance.get("/comments", {
-        data: {
-          post_id: "id_disini",
-        },
-      });
-      return res;
+      const { data } = await axiosInstance.get(`/comments/${id}`);
+      return data;
     } catch (error) {
       console.log(error);
     }
