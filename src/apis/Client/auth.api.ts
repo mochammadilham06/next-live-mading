@@ -17,6 +17,14 @@ const APIAuth = {
       console.log(error);
     }
   },
+  async GetUserActive(id: any) {
+    try {
+      const { data } = await axiosInstance.get(`/user/${id}`);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };
 
 export default APIAuth;
